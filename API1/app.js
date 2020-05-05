@@ -36,7 +36,6 @@ app.use(cors());
 // **** Protected **** //
 // users needs to be protected //
 app.get('/GetAllUsers', jwtCheck , async (req, res) => {
-    console.log("getting to here ");
     try {
         const user = await User.find();
 
@@ -56,7 +55,6 @@ app.get('/GetAllUsers', jwtCheck , async (req, res) => {
 // **** Protected **** //
 // getting a user by an attribute //
 app.get('/GetUser/:data', jwtCheck, async (req, res) => {
-    console.log(req.params.data);
     try {
         const user = await User.find();
         var tempArray = [];
@@ -83,61 +81,7 @@ app.get('/GetUser/:data', jwtCheck, async (req, res) => {
 });
 
 
-// not sure if we actually need this anymore //
-// user logs in //
-app.get('/LoginWithEmailPassword/:email/password/:password/department/:department', async (req, res) => {
-    try {
-        const user = await User.find();
-        var email = req.params.email;
-        var password = req.params.password;
-        var department = req.params.department;
 
-        if (email == "" || password == "") {
-            res.json({ message: "Email or password cannot be left blank" });
-        } else {
-            var exists = false;
-            var tempUserObject;
-
-            for (var i = 0; i < user.length; i++) {
-
-                var userObject = user[i];
-
-                if (userObject.department != undefined) {
-                    if (userObject.email == email && userObject.password == password && userObject.department == department) {
-                        exists = true;
-
-                        const user = new User({
-                            email: userObject.email,
-                            role: userObject.role,
-                            password: "",
-                            department: userObject.department,
-                            phone: userObject.phone,
-                            firstName: userObject.firstName,
-                            lastName: userObject.lastName,
-                            ext: userObject.ext,
-                            dateCreated: userObject.dateCreated,
-                            userCreated: userObject.userCreated,
-                            dateUpdated: userObject.dateUpdated,
-                            userUpdated: userObject.userUpdated,
-                            active: userObject.active
-                        });
-                        tempUserObject = user;
-                    }
-                }
-            }
-
-            if (exists) {
-                console.log("exists");
-                res.json({message: tempUserObject });
-            } else {
-                console.log("Does not exist");
-                res.json({ message: null });
-            }
-        }
-    } catch (err) {
-        res.json({ message: err });
-    }
-});
 
 // **** Protected **** //
 // adding a new user //
@@ -249,7 +193,6 @@ app.put('/UpdateUser/:id', jwtCheck , async (req, res) => {
 // **** Protected **** //
 // needs to be protected //
 app.get('/GetAllTickets', jwtCheck , async (req, res) => {
-    console.log("getting to here yo...");
     try {
         const data = await Data.find();
         
@@ -383,7 +326,6 @@ app.get('/GetAllMemos', async (req, res) => {
 // **** Protected **** //
 // getting a specific memo by id //
 app.get('/GetMemo/:id', jwtCheck ,async (req, res) => {
-    console.log("in here ya....")
     try {
         const data = await Memos.find();
         var tempArray = [];
@@ -406,7 +348,6 @@ app.get('/GetMemo/:id', jwtCheck ,async (req, res) => {
 // adding a memo //
 app.post('/AddMemo', jwtCheck , async (req, res) => {
 
-    console.log("in this place... ");
     var dateTime = new Date().toISOString();
 
     const data = new Memos({
